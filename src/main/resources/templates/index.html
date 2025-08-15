@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --done-color: gray;
+        }
+        body.dark {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --done-color: #aaaaaa;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: sans-serif;
+            max-width: 720px;
+            margin: 2rem auto;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        form { margin-bottom: 1rem; }
+        input[type=text] {
+            width: 70%;
+            padding: 0.5rem;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--text-color);
+        }
+        button {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            background: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+        }
+        ul { list-style: none; padding-left: 0; }
+        li { display: flex; gap: 0.75rem; align-items: center; margin: 0.4rem 0; }
+        .done { text-decoration: line-through; color: var(--done-color); }
+        a {
+            text-decoration: none;
+            color: var(--text-color);
+            border: 1px solid var(--text-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<h1>My To-Do List</h1>
+
+<!-- Dark Mode Toggle -->
+<button onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+
+<form action="/add" method="post">
+    <input type="text" name="title" placeholder="Enter task" required />
+    <button type="submit">Add</button>
+</form>
+
+<ul>
+    <li th:each="task : ${tasks}">
+        <span th:if="${task.done}"
+              th:text="${task.title}"
+              class="done"></span>
+        <span th:if="${!task.done}"
+              th:text="${task.title}"></span>
+
+        <a th:if="${!task.done}"
+           th:href="@{'/done/' + ${task.id}}">Done</a>
+        <a th:href="@{'/delete/' + ${task.id}}">Delete</a>
+    </li>
+</ul>
+
+<script>
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+        localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    }
+    // Keep mode on reload
+    if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
+    }
+</script>
+</body>
+</html>
