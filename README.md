@@ -52,7 +52,6 @@ mvn spring-boot:run
 Open your browser and go to:
 ```Arduino
 http://localhost:8081
-
 ```
 ---Project Structure---
 ```bash
@@ -63,3 +62,10 @@ src/
       templates/            # Thymeleaf templates (index.html)
       application.properties
 ```
+License
+
+This project is licensed under the MIT License.
+
+
+---
+
